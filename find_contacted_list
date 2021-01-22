@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+ void dfs(char selected_cand,vector<char> & contacted_cand_list,set<char>&visited,unordered_map<char,vector<char>> database){
+     visited.insert(selected_cand);  //tag the current candidate selected to remove duplicates
+     //iterate all friends of selected candidate and make a recursive call 
+     for(auto frnds_of_sel_cand:database[selected_cand]){ 
+        if(visited.find(frnds_of_sel_cand)==visited.end()) //if candidate is not selected prev then we will recursive call
+          dfs(frnds_of_sel_cand,contacted_cand_list,visited,database);
+       }
+            contacted_cand_list.push_back(selected_cand);// push the current candiate in our list
+       }
+
+vector<char> find_all_contacted_cand(char sel_cand,unordered_map<char,vector<char>> database)
+{
+       set<char> visited;
+       vector<char> contacted_cand_list;
+       dfs(sel_cand,contacted_cand_list,visited,database);//depth first search  call
+       return  contacted_cand_list;
+}    
+
+int main() {
+
+    // initialize the data in a map
+   unordered_map<char,vector<char>> database;
+   database['A']={'B','C','J'};
+   database['D']={'H','F','G'};
+   database['H']={'I','K'};
+   database['J']={};
+   database['K']={'L','M','N'};
+   database['O']={'P','V'};
+   database['Q']={'S','T'};
+   database['U']={};
+   database['V']={'W','X','Y','Z'};
+   //input selected candiadate
+   char sel_cand;
+   cin>>sel_cand;
+   //   find the list of all the candidates contacted 
+   vector<char> list_contacted=find_all_contacted_cand(sel_cand,database);
+   for(int i=0;i<list_contacted.size()-1;i++)
+   {
+       cout<<list_contacted[i]<<" ";
+   }
+   
+
+
+
+}
